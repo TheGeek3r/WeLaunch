@@ -1,0 +1,316 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div class="dark bg-card dark:border-b">
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+            <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12">
+                <!-- Avatar and name -->
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+                        <img
+                            class="w-full h-full object-cover"
+                            src="assets/images/avatars/brian-hughes.jpg">
+                    </div>
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container>
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">Ajouter un plat</div>
+                        </ng-container>
+                        <!--<div class="flex items-center">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                            <div class="ml-1.5 leading-6 truncate text-secondary">You have 2 new messages and 15 new tasks</div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="relative flex flex-col flex-auto items-center">
+        <div class="w-full max-w-none md:max-w-3xl m-0 md:m-6">
+            <form
+                class="bg-card shadow rounded-none md:rounded-2xl overflow-hidden"
+                [formGroup]="dishDetail">
+                <mat-vertical-stepper
+                    [linear]="true"
+                    #verticalStepper>
+                    <mat-step
+                        [formGroupName]="'step1'"
+                        [stepControl]="dishDetail.get('step1')"
+                        #verticalStepperStep1>
+                        <ng-template matStepLabel>Informations</ng-template>
+                        <div class="grid sm:grid-cols-4 gap-6 w-full mb-2">
+                            <div class="sm:col-span-4">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Nom</mat-label>
+                                    <mat-icon
+                                        matPrefix
+                                        class="hidden sm:flex icon-size-5"
+                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                    <input
+                                        matInput
+                                        [formControlName]="'name'"
+                                        [placeholder]="'Nom du repas'"
+                                        [spellcheck]="false">
+                                </mat-form-field>
+                            </div>
+                            <div class="sm:col-span-4">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Catégorie</mat-label>
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:location-marker'"
+                                        matPrefix></mat-icon>
+                                    <mat-select [formControlName]="'category'">
+                                        <mat-option [value]="'usa'">Entrée</mat-option>
+                                        <mat-option [value]="'canada'">Plat</mat-option>
+                                        <mat-option [value]="'mexico'">Dessert</mat-option>
+                                        <mat-option [value]="'france'">Appéritif</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <!-- Title -->
+                            <div class="sm:col-span-2">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Durée de préparation</mat-label>
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:briefcase'"
+                                        matPrefix></mat-icon>
+                                    <input
+                                        [formControlName]="'preparationTime'"
+                                        matInput>
+                                </mat-form-field>
+                            </div>
+                            <!-- Company -->
+                            <div class="sm:col-span-2">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Durée de cuisson</mat-label>
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:office-building'"
+                                        matPrefix></mat-icon>
+                                    <input
+                                        [formControlName]="'cookingTime'"
+                                        matInput>
+                                </mat-form-field>
+                            </div>
+                        </div>
+        
+                        <!-- Tags -->
+                        <div class="flex flex-wrap items-center -m-1.5">
+                            <!-- Tags -->
+                            
+                            <ng-container *ngIf="dish.seasons.length">
+                                <p class="my-6 font-medium">
+                                    Saisons
+                                </p>                                <br>
+                                <ng-container *ngFor="let season of dish.seasons">
+                                    <div class="flex items-center justify-center px-4 m-1.5 rounded-full leading-9 text-gray-600 bg-gray-300 dark:text-gray-300 dark:bg-gray-700">
+                                        <span class="text-md font-medium whitespace-nowrap">{{season.name}}</span>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                            <!-- Tags panel and its button -->
+                            <div
+                                class="flex items-center justify-center px-4 m-1.5 rounded-full leading-9 cursor-pointer text-gray-600 bg-gray-300 dark:text-gray-300 dark:bg-gray-700"
+                                (click)="openSeasonsPanel()"
+                                #seasonsPanelOrigin>
+        
+                                <mat-icon
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                                <span class="ml-1.5 text-md font-medium whitespace-nowrap">Modifier</span>
+        
+                                <!-- Tags panel -->
+                                <ng-template #seasonsPanel>
+                                    <div class="w-60 rounded border shadow-md bg-card">
+                                        <div
+                                            class="flex flex-col max-h-64 py-2 border-t overflow-y-auto">
+                                            <!-- Tags -->
+                                            <ng-container *ngFor="let season of seasons">
+                                                <div
+                                                    class="flex items-center h-10 min-h-10 px-4 cursor-pointer hover:bg-hover"
+                                                    (click)="toggleContactTag(season)"
+                                                    matRipple>
+                                                    <mat-checkbox
+                                                        class="flex items-center h-10 min-h-10 pointer-events-none"
+                                                        [checked]="dish.seasons.includes(season)"
+                                                        [color]="'primary'"
+                                                        [disableRipple]="true">
+                                                    </mat-checkbox>
+                                                    <div class="ml-1">{{season.name}}</div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button
+                                class="px-8 mt-3"
+                                mat-flat-button
+                                [color]="'primary'"
+                                [disabled]="verticalStepperStep1.stepControl.pristine || verticalStepperStep1.stepControl.invalid"
+                                type="button"
+                                (click)="verticalStepper.next()">
+                                Suivant
+                            </button>
+                        </div>
+                    </mat-step>
+                    <mat-step
+                        [formGroupName]="'step2'"
+                        [stepControl]="dishDetail.get('step2')"
+                        #verticalStepperStep2>
+                        <ng-template matStepLabel>Ingrédients</ng-template>
+                        <div class="space-y-4">
+                            <ng-container formArrayName="ingredients" *ngFor="let ingredients of dishDetail.get('step2').get('ingredients')['controls']; let i = index; let first = first; let last = last; trackBy: trackByFn">
+                                <div class="flex grid grid-cols-12 gap-2 w-full mt-8" [formGroupName]="i">
+                                    <div class="col-span-5">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label *ngIf="first">Ingrédient</mat-label>
+                                            <input
+                                                formControlName="name"
+                                                matInput>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-span-3">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label *ngIf="first">Quantité</mat-label>
+                                            <input
+                                                formControlName="amount"
+                                                matInput>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-span-3">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label *ngIf="first">Unité</mat-label>
+                                            <input
+                                                formControlName="unit"
+                                                matInput>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-span-1">
+                                        <ng-container *ngIf="!(first && last)">
+                                            <div
+                                                class="flex items-center w-10"
+                                                [ngClass]="{'mt-6': first}">
+                                                <button
+                                                    class="w-8 h-8 min-h-8 mt-2"
+                                                    mat-icon-button
+                                                    (click)="removeIngredientField(i)"
+                                                    matTooltip="Remove">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                                </button>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div
+                            class="group inline-flex items-center mt-2 -ml-4 py-2 px-4 rounded cursor-pointer"
+                            (click)="addIngredientField()">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
+                            <span class="ml-2 font-medium text-secondary group-hover:underline">Ajouter un ingrédient</span>
+                        </div>
+                        <div class="flex justify-end">
+                            <button
+                                class="px-8 mr-2"
+                                mat-flat-button
+                                [color]="'accent'"
+                                type="button"
+                                matStepperPrevious>
+                                Précédent
+                            </button>
+                            <button
+                                class="px-8"
+                                mat-flat-button
+                                [color]="'primary'"
+                                type="button"
+                                [disabled]="verticalStepperStep2.stepControl.pristine || verticalStepperStep2.stepControl.invalid"
+                                (click)="verticalStepper.next()">
+                                Suivant
+                            </button>
+                        </div>
+                    </mat-step>
+                    <mat-step
+                        [formGroupName]="'step3'"
+                        [stepControl]="dishDetail.get('step3')"
+                        #verticalStepperStep3>
+                        <ng-template matStepLabel>Recette</ng-template>
+                        <div class="space-y-4">
+                            <ng-container formArrayName="recipes" *ngFor="let recipe of dishDetail.get('step3').get('recipes')['controls']; let i = index; let first = first; let last = last; trackBy: trackByFn">
+                                <div class="flex grid grid-cols-12 gap-2 w-full mt-8" [formGroupName]="i">
+                                    <div class="col-span-11">
+                                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                                            <mat-label *ngIf="first">Description</mat-label>
+                                            <textarea
+                                                formControlName="description"
+                                                matInput
+                                                [rows]="1"
+                                                ></textarea>
+                                            <span matPrefix>Etape {{i+1}}&nbsp;</span>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-span-1">
+                                        <ng-container *ngIf="!(first && last)">
+                                            <div
+                                                class="flex items-center w-10"
+                                                [ngClass]="{'mt-6': first}">
+                                                <button
+                                                    class="w-8 h-8 min-h-8 mt-2"
+                                                    mat-icon-button
+                                                    (click)="removeRecipeField(i)"
+                                                    matTooltip="Remove">
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                                </button>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div
+                            class="group inline-flex items-center mt-2 -ml-4 py-2 px-4 rounded cursor-pointer"
+                            (click)="addRecipeField()">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
+                            <span class="ml-2 font-medium text-secondary group-hover:underline">Ajouter un étape</span>
+                        </div>
+                        <div class="flex justify-end">
+                            <button
+                                class="px-8 mr-2"
+                                mat-flat-button
+                                [color]="'accent'"
+                                type="button"
+                                matStepperPrevious>
+                                Précédent
+                            </button>
+                            <button
+                                class="px-8"
+                                mat-flat-button
+                                [color]="'primary'"
+                                type="button"
+                                [disabled]="verticalStepperStep2.stepControl.pristine || verticalStepperStep2.stepControl.invalid"
+                                (click)="addDish()">
+                                Ajouter le plat
+                            </button>
+                        </div>
+                    </mat-step>
+                </mat-vertical-stepper>
+            </form>
+
+            
+        </div>
+    </div>
+</div>

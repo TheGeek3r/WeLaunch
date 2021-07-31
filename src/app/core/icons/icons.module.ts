@@ -21,5 +21,10 @@ export class IconsModule
         this._matIconRegistry.addSvgIconSetInNamespace('feather', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/feather.svg'));
         this._matIconRegistry.addSvgIconSetInNamespace('heroicons_outline', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/heroicons-outline.svg'));
         this._matIconRegistry.addSvgIconSetInNamespace('heroicons_solid', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/heroicons-solid.svg'));
+        this._matIconRegistry.addSvgIcon('preparation', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/preparation.svg'));
+        this._matIconRegistry.addSvgIcon('cuisson', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/cuisson.svg'));        
+        this._matIconRegistry.addSvgIcon('trash', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/trash.svg'));        
+        this._matIconRegistry.addSvgIcon('ingredients', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/ingredients.svg'));        
+
     }
 }

@@ -16,7 +16,7 @@ export const appRoutes: Route[] = [
     // After the user signs in, the sign in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'example'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'categories'},
 
     // Auth routes for guests
     {
@@ -47,7 +47,7 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'sign-out', loadChildren: () => import('app/modules/auth/sign-out/sign-out.module').then(m => m.AuthSignOutModule)},
-            {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.module').then(m => m.AuthUnlockSessionModule)}
+            {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.module').then(m => m.AuthUnlockSessionModule)},
         ]
     },
 
@@ -74,6 +74,11 @@ export const appRoutes: Route[] = [
         },
         children   : [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
+            {path: 'categories', loadChildren:() => import('app/modules/categories/categories.module').then(m => m.CategoriesModule)},
+            {path: 'prochains-repas', loadChildren:() => import('app/modules/next-dishes/next-dishes.module').then(m => m.NextDishesModule)},
+            {path: 'nouveau-repas', loadChildren:() => import('app/modules/add-dish/add-dish.module').then(m => m.AddDishModule)},
+            {path: 'details-repas', loadChildren:() => import('app/modules/dish-details/dish-details.module').then(m => m.DishDetailsModule)},
+            {path: 'les-repas', loadChildren:() => import('app/modules/dishes-list/dishes-list.module').then(m => m.DishesListModule)},
         ]
     }
 ];

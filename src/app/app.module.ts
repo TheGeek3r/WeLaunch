@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExtraOptions, PreloadAllModules, RouterModule } from '@angular/router';
@@ -12,6 +12,17 @@ import { mockApiServices } from 'app/mock-api';
 import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
+import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { DishesListComponent } from './modules/dishes-list/dishes-list.component';
+import { GenerateDishesComponent } from './modules/generate-dishes/generate-dishes.component';
+
+registerLocaleData(localeFr);
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -20,7 +31,8 @@ const routerConfig: ExtraOptions = {
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        GenerateDishesComponent
     ],
     imports     : [
         BrowserModule,
@@ -39,11 +51,20 @@ const routerConfig: ExtraOptions = {
         LayoutModule,
 
         // 3rd party modules that require global configuration via forRoot
-        MarkdownModule.forRoot({})
+        MarkdownModule.forRoot({}),
+
+        BrowserAnimationsModule,
+
+        FormsModule,
+        MatFormFieldModule,
+        MatDialogModule,
+        MatInputModule,
+        MatIconModule
     ],
     bootstrap   : [
         AppComponent
-    ]
+    ],
+    providers: [ { provide: LOCALE_ID, useValue: "fr-FR" }],
 })
 export class AppModule
 {
