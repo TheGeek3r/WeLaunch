@@ -79,6 +79,8 @@ export const appRoutes: Route[] = [
             {path: 'nouveau-repas', loadChildren:() => import('app/modules/add-dish/add-dish.module').then(m => m.AddDishModule)},
             {path: 'details-repas', loadChildren:() => import('app/modules/dish-details/dish-details.module').then(m => m.DishDetailsModule)},
             {path: 'les-repas', loadChildren:() => import('app/modules/dishes-list/dishes-list.module').then(m => m.DishesListModule)},
+            {path: 'generer-repas', loadChildren:() => import('app/modules/generate-dishes/generate-dishes.module').then(m => m.GenerateDishesModule)},
+
         ]
     }
 ];

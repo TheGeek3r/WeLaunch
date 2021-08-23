@@ -56,6 +56,19 @@ export class CategoriesComponent implements OnInit {
       if(result != null)
       {
         let img: string;
+
+        this._categoriesService.getImageOfCategorie('food').subscribe(image => 
+          {
+            console.log(image);
+            img = image.urls.raw + "&auto=format&fit=crop&w=318&h=180";
+            this.categories.push({name: result, numberOfDishes: 0, algoRepas: false, image: img});
+          },
+          err => {
+            img = "assets/images/categories/demo.jpeg";
+            this.categories.push({name: result, numberOfDishes: 0, algoRepas: false, image: img});
+          }
+        );
+
         /*this._categoriesService.getTraductionOfCategorie(result).subscribe(traduction => 
           {
             // gérer les erreurs
@@ -80,7 +93,7 @@ export class CategoriesComponent implements OnInit {
             }
           }
         ); */
-        this.categories.push({name: result, numberOfDishes: 0, algoRepas: false, image: this.image});
+        //this.categories.push({name: result, numberOfDishes: 0, algoRepas: false, image: this.image});
       }    
     });
   }

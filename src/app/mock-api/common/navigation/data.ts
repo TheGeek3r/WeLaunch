@@ -71,4 +71,11 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon : 'calendar_today',
         link : '/les-repas'
     },
+    {
+        id   : 'generer-repas',
+        title: 'Generer Repas',
+        type : 'basic',
+        icon : 'calendar_today',
+        link : '/generer-repas'
+    },
 ];

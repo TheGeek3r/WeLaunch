@@ -17,10 +17,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-import { DishesListComponent } from './modules/dishes-list/dishes-list.component';
-import { GenerateDishesComponent } from './modules/generate-dishes/generate-dishes.component';
 
 registerLocaleData(localeFr);
 
@@ -31,8 +29,7 @@ const routerConfig: ExtraOptions = {
 
 @NgModule({
     declarations: [
-        AppComponent,
-        GenerateDishesComponent
+        AppComponent
     ],
     imports     : [
         BrowserModule,
