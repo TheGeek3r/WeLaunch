@@ -5,8 +5,8 @@
 export const environment = {
     production: false,
     traductionService : 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20200424T203159Z.be1f94975f70ed48.cc6816048f5abb8b2e72895c34854fd8b84efd3a',
-    imageService : 'https://api.unsplash.com/photos/random/?client_id=39c94c1aa6b463339e07ecbe04865d28d59ba36775b349c86197fd3676dd67f4'
-
+    imageService : 'https://api.unsplash.com/photos/random/?client_id=39c94c1aa6b463339e07ecbe04865d28d59ba36775b349c86197fd3676dd67f4',
+    apiV1 : '',
 };
 
 /*

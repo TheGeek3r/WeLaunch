@@ -4,5 +4,6 @@ export const user = {
     name  : 'Brian Hughes',
     email : 'hughes.brian@company.com',
     avatar: 'assets/images/avatars/brian-hughes.jpg',
-    status: 'online'
+    status: 'online',
+    numberOfPeople: 4
 };

@@ -1,7 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ExtraOptions, PreloadAllModules, RouterModule } from '@angular/router';
+import { ExtraOptions, NoPreloading, PreloadAllModules, RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { FuseModule } from '@fuse';
 import { FuseConfigModule } from '@fuse/services/config';
@@ -17,13 +17,16 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { DatePipe, registerLocaleData } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { ToastrModule } from 'ngx-toastr';
+import { HomeComponent } from './modules/home/home.component';
 
 registerLocaleData(localeFr);
 
 const routerConfig: ExtraOptions = {
-    preloadingStrategy       : PreloadAllModules,
+    preloadingStrategy       : NoPreloading,
     scrollPositionRestoration: 'enabled'
 };
 
@@ -34,6 +37,11 @@ const routerConfig: ExtraOptions = {
     imports     : [
         BrowserModule,
         BrowserAnimationsModule,
+        ToastrModule.forRoot({
+            positionClass: 'toast-bottom-center',
+            maxOpened: 1,
+            autoDismiss: true
+          }),
         RouterModule.forRoot(appRoutes, routerConfig),
 
         // Fuse, FuseConfig & FuseMockAPI
@@ -56,7 +64,8 @@ const routerConfig: ExtraOptions = {
         MatFormFieldModule,
         MatDialogModule,
         MatInputModule,
-        MatIconModule
+        MatIconModule,
+        MatSidenavModule
     ],
     bootstrap   : [
         AppComponent

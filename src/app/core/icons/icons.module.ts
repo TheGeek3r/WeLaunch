@@ -25,6 +25,5 @@ export class IconsModule
         this._matIconRegistry.addSvgIcon('cuisson', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/cuisson.svg'));        
         this._matIconRegistry.addSvgIcon('trash', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/trash.svg'));        
         this._matIconRegistry.addSvgIcon('ingredients', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/ingredients.svg'));        
-
     }
 }

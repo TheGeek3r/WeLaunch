@@ -30,11 +30,11 @@ export const futuristicNavigation: FuseNavigationItem[] = [
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
-        title: 'pe',
+        id   : 'Home',
+        title: 'Accueil',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        link : '/accueil'
     },
     {
         id   : 'categories',
@@ -54,28 +54,35 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         id   : 'nouveau-repas',
         title: 'Nouveau Repas',
         type : 'basic',
-        icon : 'calendar_today',
+        icon : 'add_circle_outline',
         link : '/nouveau-repas'
     },    
     {
         id   : 'details-repas',
         title: 'Détails',
         type : 'basic',
-        icon : 'calendar_today',
+        icon : 'lunch_dining',
         link : '/details-repas'
     },
     {
         id   : 'les-repas',
         title: 'Les Repas',
         type : 'basic',
-        icon : 'calendar_today',
+        icon : 'fastfood',
         link : '/les-repas'
     },
     {
         id   : 'generer-repas',
         title: 'Generer Repas',
         type : 'basic',
-        icon : 'calendar_today',
+        icon : 'add_shopping_cart',
         link : '/generer-repas'
+    },
+    {
+        id   : 'liste-des-courses',
+        title: 'Liste des courses',
+        type : 'basic',
+        icon : 'shopping_cart',
+        link : '/liste-des-courses'
     },
 ];

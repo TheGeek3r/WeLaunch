@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { concatMap, catchError } from 'rxjs/operators';
+import { List } from 'lodash';
+import { Category } from 'app/models/categories';
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +13,17 @@ export class CategoriesService {
 
   constructor(private http: HttpClient) { }
 
- getTraductionOfCategorie(mot : string)
+  getTraductionOfCategorie(mot : string)
   {
     return this.http.get<any>(environment.traductionService + "&text=" + mot + "&lang=fr-en");
   }
 
- getImageOfCategorie(traduction: string)
+  getImageOfCategorie(traduction: string)
   {
     return this.http.get<any>(environment.imageService + "&query=" + traduction);
   }
 
-   ajouterCategorie(nom : string)
+  ajouterCategorie(nom : string)
   {
     let img: string;
     return this.getTraductionOfCategorie(nom).pipe
@@ -38,4 +40,11 @@ export class CategoriesService {
         }),
     )
   }
+
+  getCategories() : Observable<Category[]>{
+    //return this.http.get<Category[]>(environment.apiV1 + "categories");
+    return of([new Category(1, "Entrée"),new Category(2, "Plats"), new Category(3, "Desserts")]);
+  }
+
+
 }

@@ -59,7 +59,6 @@ export const appRoutes: Route[] = [
             layout: 'empty'
         },
         children   : [
-            {path: 'home', loadChildren: () => import('app/modules/landing/home/home.module').then(m => m.LandingHomeModule)},
         ]
     },
 
@@ -73,14 +72,14 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children   : [
-            {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             {path: 'categories', loadChildren:() => import('app/modules/categories/categories.module').then(m => m.CategoriesModule)},
             {path: 'prochains-repas', loadChildren:() => import('app/modules/next-dishes/next-dishes.module').then(m => m.NextDishesModule)},
             {path: 'nouveau-repas', loadChildren:() => import('app/modules/add-dish/add-dish.module').then(m => m.AddDishModule)},
             {path: 'details-repas', loadChildren:() => import('app/modules/dish-details/dish-details.module').then(m => m.DishDetailsModule)},
             {path: 'les-repas', loadChildren:() => import('app/modules/dishes-list/dishes-list.module').then(m => m.DishesListModule)},
             {path: 'generer-repas', loadChildren:() => import('app/modules/generate-dishes/generate-dishes.module').then(m => m.GenerateDishesModule)},
-
+            {path: 'liste-des-courses', loadChildren:() => import('app/modules/shopping-list/shopping-list.module').then(m => m.ShoppingListModule)},
+            {path: '**', loadChildren: () => import('app/modules/home/home.module').then(m => m.HomeModule)},
         ]
     }
 ];
