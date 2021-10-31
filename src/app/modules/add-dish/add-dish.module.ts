@@ -14,6 +14,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -42,7 +44,9 @@ const routes: Routes = [
     MatStepperModule,
     MatTooltipModule,
     SharedModule,
-    FuseFindByKeyPipeModule
+    FuseFindByKeyPipeModule,
+    MatAutocompleteModule,
+    HttpClientModule
   ]
 })
 export class AddDishModule { }

@@ -15,12 +15,12 @@
                         <ng-container>
                             <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">Vos Recettes</div>
                             <div class="ml-0.5 font-medium text-secondary">
-                                <ng-container *ngIf="contactsCount > 0">
-                                    {{contactsCount}}
+                                <ng-container *ngIf="dishes.length > 0">
+                                    {{dishes.length}}
                                 </ng-container>
-                                {{contactsCount | i18nPlural: {
+                                {{ dishes.length | i18nPlural: {
                                 '=0'   : 'Aucune Recette',
-                                '=1'   : 'Recette',
+                                '=1'   : '1 Recette',
                                 'other': 'Recettes'
                             } }}
                             </div>
@@ -37,119 +37,129 @@
         </div>
     </div>
 
-    <div class="relative flex flex-col flex-auto items-center">
+    <div class="relative flex flex-col flex-auto items-center bg-default">
         <div class="w-full max-w-none md:max-w-3xl m-0 md:m-6 bg-card rounded-none md:rounded-2xl ">
-            <!-- Main -->
             <div class="flex-auto">
+                    <!-- Main -->
+                <ng-container *ngIf="dishes.length; else noDishe">
 
-                <!-- Header -->
-                <div class="flex flex-col md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
+                    <!-- Header -->
+                    <div class="flex flex-col md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
 
-                    <!-- Main actions -->
-                    <div class="flex items-center">
-                        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full sm:w-30 mr-4">
-                            <mat-select
-                                [value]="'all'"
-                                (selectionChange)="filterByCategory($event)">
-                                <mat-option [value]="'all'">Toutes</mat-option>
-                                <!--<ng-container *ngFor="let category of categories; trackBy: trackByFn">
-                                    <mat-option [value]="category.name">{{category.title}}</mat-option>
-                                </ng-container>-->
-                            </mat-select>
-                        </mat-form-field>
-                        <!-- Search -->
-                        <div class="flex-auto">
-                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full min-w-50">
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
-                                <input
-                                    matInput
-                                    [formControl]="searchInputControl"
-                                    [autocomplete]="'off'"
-                                    [placeholder]="'Search contacts'">
+                        <!-- Main actions -->
+                        <div class="flex items-center">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full sm:w-30 mr-4">
+                                <mat-select
+                                    [(value)]="defaultValue"
+                                    (selectionChange)="filterByCategory($event)">
+                                    <mat-option [value]="'all'">Toutes</mat-option>
+                                    <ng-container *ngFor="let category of categories; trackBy: trackByFn">
+                                        <mat-option [value]="category.id">{{category.name}}</mat-option>
+                                    </ng-container>
+                                </mat-select>
                             </mat-form-field>
+                            <!-- Search -->
+                            <div class="flex-auto">
+                                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full min-w-50">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        matPrefix
+                                        [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                    <input
+                                        matInput
+                                        (input)="filterByQuery(query.value)"
+                                        [formControl]="searchInputControl"
+                                        [autocomplete]="'off'"
+                                        [placeholder]="'Rechercher une recette...'"
+                                        #query>
+                                </mat-form-field>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Contacts list -->
-                <div class="relative">
-                    <!--<ng-container *ngIf="contacts$ | async as contacts">
-                        <ng-container *ngIf="contacts.length; else noContacts">-->
-                            <ng-container *ngFor="let contact of contacts; let i = index; trackBy: trackByFn">
-                                <!-- Group -->
-                                <ng-container *ngIf="i === 0 || contact.category !== contacts[i - 1].category">
-                                    <div class="z-10 sticky top-0 -mt-px px-6 py-1 md:px-8 border-t border-b font-medium uppercase text-secondary bg-gray-50 dark:bg-gray-700">
-                                        {{contact.category}}
+                    <!-- Contacts list -->
+                    <div class="relative">
+                                <ng-container *ngFor="let dishe of filteredDishes; let i = index; trackBy: trackByFn">
+                                    <!-- Group -->
+                                    <ng-container *ngIf="i === 0 || dishe.category !== filteredDishes[i - 1].category">
+                                        <div class="z-10 sticky top-0 -mt-px px-6 py-1 md:px-8 border-t border-b font-medium uppercase text-secondary bg-gray-50 dark:bg-gray-700">
+                                            {{dishe.category}}
+                                        </div>
+                                    </ng-container>
+                                    <div class="grid grid-cols-9 px-6 py-4 md:px-8 cursor-pointer border-b"
+                                    [ngClass]="{'hover:bg-gray-100 dark:hover:bg-hover': !selectedContact || selectedContact.id !== dishe.id,
+                                    'bg-primary-50 dark:bg-hover': selectedContact && selectedContact.id === dishe.id}"
+                                    [routerLink]="['/details-repas/', dishe.id]">
+                                        <div class="col-span-9 sm:col-span-3 flex items-center">
+                                            <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
+                                                <ng-container *ngIf="dishe.avatar">
+                                                    <img
+                                                        class="object-cover w-full h-full"
+                                                        [src]="dishe.avatar"
+                                                        alt="Contact avatar"/>
+                                                </ng-container>
+                                                <ng-container *ngIf="!dishe.avatar">
+                                                    <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                                        {{dishe.name.charAt(0)}}
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="font-medium">{{dishe.name}}</div>
+                                                <div class="text-secondary">{{dishe.email}}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-4 sm:col-span-2 flex items-center mt-4 mr-6 sm:mr-0 ml-auto sm:mt-0">
+                                            <div class="sm:order-1 ml-4 sm:ml-0">
+                                                {{dishe.preparation}}
+                                            </div>
+                                            <div class="sm:order-2 ml-3 mt-1">
+                                                <button>
+                                                    <mat-icon
+                                                        [svgIcon]="'preparation'"></mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-4 sm:col-span-2 flex items-center mt-4 sm:mt-0 ml-auto mr-12 sm:mr-0">
+                                            <div class="sm:order-1 ml-4 sm:ml-0">
+                                                {{dishe.cuisson}}
+                                            </div>
+                                            <div class="sm:order-2 ml-3 mt-1">
+                                                <button>
+                                                    <mat-icon
+                                                        [svgIcon]="'cuisson'"></mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-1 sm:col-span-2 flex items-center mt-4 sm:mt-0 sm:ml-auto">
+                                            <div class="sm:order-2 sm:ml-3">
+                                                <button mat-icon-button>
+                                                    <mat-icon
+                                                        [svgIcon]="'trash'"></mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </ng-container>
-                                <!-- Contact -->
-                                <div class="grid grid-cols-9 px-6 py-4 md:px-8 cursor-pointer border-b"
-                                [ngClass]="{'hover:bg-gray-100 dark:hover:bg-hover': !selectedContact || selectedContact.id !== contact.id,
-                                'bg-primary-50 dark:bg-hover': selectedContact && selectedContact.id === contact.id}"
-                                [routerLink]="['./', contact.id]"
-                                     >
-                                    <div class="col-span-9 sm:col-span-3 flex items-center">
-                                        <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
-                                            <ng-container *ngIf="contact.avatar">
-                                                <img
-                                                    class="object-cover w-full h-full"
-                                                    [src]="contact.avatar"
-                                                    alt="Contact avatar"/>
-                                            </ng-container>
-                                            <ng-container *ngIf="!contact.avatar">
-                                                <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
-                                                    {{contact.name.charAt(0)}}
-                                                </div>
-                                            </ng-container>
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="font-medium">{{contact.name}}</div>
-                                            <div class="text-secondary">{{contact.email}}</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-span-4 sm:col-span-2 flex items-center mt-4 mr-6 sm:mr-0 ml-auto sm:mt-0">
-                                        <div class="sm:order-1 ml-4 sm:ml-0">
-                                            {{contact.preparation}}
-                                        </div>
-                                        <div class="sm:order-2 ml-3 mt-1">
-                                            <button>
-                                                <mat-icon
-                                                    [svgIcon]="'preparation'"></mat-icon>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-span-4 sm:col-span-2 flex items-center mt-4 sm:mt-0 ml-auto mr-12 sm:mr-0">
-                                        <div class="sm:order-1 ml-4 sm:ml-0">
-                                            {{contact.cuisson}}
-                                        </div>
-                                        <div class="sm:order-2 ml-3 mt-1">
-                                            <button>
-                                                <mat-icon
-                                                    [svgIcon]="'cuisson'"></mat-icon>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-span-1 sm:col-span-2 flex items-center mt-4 sm:mt-0 sm:ml-auto">
-                                        <div class="sm:order-2 sm:ml-3">
-                                            <button mat-icon-button>
-                                                <mat-icon
-                                                    [svgIcon]="'trash'"></mat-icon>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ng-container>
-                       <!--</ng-container>
-                    </ng-container>-->
-
-                    <!-- No contacts -->
-                    <ng-template #noContacts>
-                        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no contacts!</div>
-                    </ng-template>
-                </div>
+            
+                    </div>
+                </ng-container>
+                <!-- No contacts -->
+                <ng-template #noDishe>
+                    <div class="text-center">
+                        <div class="p-8 pb-8 border-t text-2xl font-semibold tracking-tight text-center">
+                            Votre livre de recette est vide.<br> Ajoutez votre première recette dès maintenant !
+                        </div>
+                        <button
+                                class="mx-6 mb-8"
+                                mat-flat-button
+                                [color]="'primary'"
+                                (click)="_router.navigate(['/nouveau-repas']);">
+                                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                                <span class="ml-2">Ajouter une recette</span>
+                        </button>
+                    </div>
+                </ng-template>
             </div>
         </div>
     </div>

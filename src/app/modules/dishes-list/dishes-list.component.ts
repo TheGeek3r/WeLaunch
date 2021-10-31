@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Category } from 'app/models/categories';
+import { CategoriesService } from 'app/services/categories.service';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-dishes-list',
@@ -10,15 +14,25 @@ import { MatSelectChange } from '@angular/material/select';
 export class DishesListComponent implements OnInit {
 
   searchInputControl: FormControl = new FormControl();
-  contactsCount: number = 0;
+  categories: Category[];
+  filters: {
+    categoryName$: BehaviorSubject<string>;
+    query$: BehaviorSubject<string>;
+  } = {
+    categoryName$ : new BehaviorSubject('all'),
+    query$        : new BehaviorSubject(''),
+  };
+  defaultValue : any;
 
-  contacts = [
+  filteredDishes = [];
+  dishes = [
       {
           id          : 'cd5fa417-b667-482d-b208-798d9da3213c',
           avatar      : 'assets/images/avatars/male-01.jpg',
           background  : 'assets/images/cards/14-640x480.jpg',
           name        : 'Pommes de terre + Bibeleskaes et lardons aux oignons',
           category    : 'Plats',
+          categoryId  : '2',
           preparation : '1h30',
           cuisson     : '40m'
       },
@@ -28,6 +42,7 @@ export class DishesListComponent implements OnInit {
           background  : null,
           name        : 'Lasagnes',
           category    : 'Plats',
+          categoryId  : '2',
           preparation : '30m',
           cuisson     : '1h40m'
       },
@@ -37,6 +52,7 @@ export class DishesListComponent implements OnInit {
           background  : 'assets/images/cards/15-640x480.jpg',
           name        : 'Bernard Langley',
           category    : 'Entrée',
+          categoryId  : '1',
           preparation : '30m',
           cuisson     : '40m'
       },
@@ -46,14 +62,48 @@ export class DishesListComponent implements OnInit {
           background  : 'assets/images/cards/16-640x480.jpg',
           name        : 'Mclaughlin Steele',
           category    : 'Desserts',
+          categoryId  : '3',
           preparation : '1h30',
           cuisson     : '1h40'
       }
     ];
 
-  constructor() { }
+  constructor(private _categoriesService : CategoriesService,
+              private _router: Router,
+              private _route: ActivatedRoute) { }
 
   ngOnInit(): void {
+      this.defaultValue = "all";
+      this._categoriesService.getCategories().subscribe(value => this.categories = value);
+      combineLatest([this.filters.categoryName$, this.filters.query$])
+            .subscribe(([categoryName, query]) => {
+
+                // Reset the filtered courses
+                this.filteredDishes = this.dishes;
+
+                // Filter by category
+                if ( categoryName !== 'all' )
+                {
+                    this.filteredDishes = this.filteredDishes.filter(dish => dish.categoryId == categoryName);
+                }
+
+                // Filter by search query
+                if ( query !== '' )
+                {
+                    this.filteredDishes = this.filteredDishes.filter(course => course.name.toLowerCase().includes(query.toLowerCase()));
+                }
+            });
+            // TODO : TO CHECK FAUX 
+            this._route.params.subscribe(params => {
+                //this.filteredDishes = this.filteredDishes.filter(dish => dish.categoryId == params['id']); // (+) converts string 'id' to a number
+                console.log(params['id'])
+                if(params['id'])
+                {
+                    this.filters.categoryName$.next(params['id']);
+                    this.defaultValue = Number(params['id']);
+                }
+            });
+
   }
 
   /**
@@ -69,21 +119,14 @@ export class DishesListComponent implements OnInit {
 
    createContact(){}
 
-       /**
-     * Filter by search query
-     *
-     * @param query
-     */
-        filterByQuery(query: string): void
-        {
-        }
-    
-        /**
-         * Filter by category
-         *
-         * @param change
-         */
-        filterByCategory(change: MatSelectChange): void
-        {
-        }
+
+   filterByQuery(query: string): void
+   {
+       this.filters.query$.next(query);
+   }
+
+   filterByCategory(change: MatSelectChange): void
+   {
+       this.filters.categoryName$.next(change.value);
+   }
 }

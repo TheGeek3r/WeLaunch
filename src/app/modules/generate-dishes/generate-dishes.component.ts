@@ -33,6 +33,7 @@ columnsChoixRepas: string[] = [ 'moment', 'repas'];
 dataSource = new MatTableDataSource<AlgoRepas>();
 addOnBlur: boolean = true;
 separatorKeysCodes = [ENTER, COMMA];
+nbPersonnes = 3;
 
 // Pour le remplissage automatique des repas
 repasCtrl = new FormControl();
@@ -42,10 +43,13 @@ allRepas: string[] = ['Jambon en croutte', 'Bouchée à la reine', 'Gratin de pa
 // Pour le remplissage du nombre de personnes
 peopleColumns: string[] = ['moment', 'repas', 'nbPersonnes'];
 
+public isRequestLoading = true;
+
 @ViewChild('repasInput', {static: false}) repasInput: ElementRef<HTMLInputElement>;
 @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
 
 verticalStepperStep1: FormGroup;
+verticalStepperStep4: FormGroup;
 verticalStepperStep5: FormGroup;
 
 constructor(
@@ -62,6 +66,10 @@ ngOnInit() {
   this.verticalStepperStep1 = this._formBuilder.group({
     nbJours: [7, [Validators.required, Validators.min(1), Validators.max(21)]],
   });
+
+  this.verticalStepperStep4 = this._formBuilder.group({
+    changeNumberOfPeople: [false, [Validators.required]]
+  })
 
   this.verticalStepperStep5 = this._formBuilder.group({
     generateShoppingList: ['oui', Validators.required]
@@ -117,12 +125,18 @@ modifRepas(element : GenererRepasCalendrier, checked : boolean, typeRepas: strin
     aModif.soir = checked;
 }
 
+// Permet de vérifier qu'il y a au moins 1 repas de selectionné
+noDayChecked(): boolean{
+  return this.choixDates.data.filter(row => !row.midi && !row.soir).length == this.choixDates.data.length;
+}
+
+
 
 // STEP 2 : step generer le repas
 genererRepas(stepper: MatStepper)
 {
   // TODO : SERVICE POUR RECUPERER LE NB DE PERSONNES PAR FAMILLE;
-  let nbPersonnes = 3;
+  
   let idNbRepas = 1;
 
   let listeRepas = [];
@@ -131,16 +145,19 @@ genererRepas(stepper: MatStepper)
   {
     const infosRepas = this.choixDates.data[i];
 
-    listeRepas.push({date: infosRepas.date, isGroupBy: true});
-    if(infosRepas.midi)
+    // On ajoute uniquement le groupe "Jour (ex : Lundi 13 Juin 2020)" s'il y a un repas de prévu
+    if(infosRepas.midi || infosRepas.soir)
+      listeRepas.push({date: infosRepas.date, isGroupBy: true});
+    
+      if(infosRepas.midi)
     {
-      listeRepas.push(new AlgoRepas(idNbRepas, infosRepas.date, "Midi", [ 'Couscous'], nbPersonnes, false));
+      listeRepas.push(new AlgoRepas(idNbRepas, infosRepas.date, "Midi", [ 'Couscous'], this.nbPersonnes, false));
       idNbRepas++;
     }
 
     if(infosRepas.soir)
     {
-      listeRepas.push(new AlgoRepas(idNbRepas, infosRepas.date, "Soir", [ 'Carbo'], nbPersonnes, false));
+      listeRepas.push(new AlgoRepas(idNbRepas, infosRepas.date, "Soir", [ 'Carbo'], this.nbPersonnes, false));
       idNbRepas++;
     }
   }
@@ -228,6 +245,7 @@ modifyNumberOfPeople(nbPeople: number, id: number){
 // Generation des repas + ajout dans la BDD 
 generateDishes(){
 
+  this.isRequestLoading = false;
   // TODO : Add popup pour confirmer si jamais y'a des repas mais sans recette, on informe l'utilisateur
   // Dans le cas ou il veut generer les repas, sinon balek quoi 
   this._router.navigate(['']);

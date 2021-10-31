@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="relative flex flex-col flex-auto items-center">
+    <div class="relative flex flex-col flex-auto items-center bg-default">
         <div class="w-full max-w-none md:max-w-3xl m-0 md:m-6">
             <form
                 class="bg-card shadow rounded-none md:rounded-2xl overflow-hidden"
@@ -47,12 +47,14 @@
                                     <mat-icon
                                         matPrefix
                                         class="hidden sm:flex icon-size-5"
-                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                        [svgIcon]="'mat_outline:restaurant'"></mat-icon>
                                     <input
                                         matInput
                                         [formControlName]="'name'"
                                         [placeholder]="'Nom du repas'"
                                         [spellcheck]="false">
+                                    <mat-error>La catégorie doit être renseignée!</mat-error>
+
                                 </mat-form-field>
                             </div>
                             <div class="sm:col-span-4">
@@ -60,7 +62,7 @@
                                     <mat-label>Catégorie</mat-label>
                                     <mat-icon
                                         class="icon-size-5"
-                                        [svgIcon]="'heroicons_solid:location-marker'"
+                                        [svgIcon]="'mat_outline:fastfood'"
                                         matPrefix></mat-icon>
                                     <mat-select [formControlName]="'category'">
                                         <mat-option [value]="'usa'">Entrée</mat-option>
@@ -68,6 +70,7 @@
                                         <mat-option [value]="'mexico'">Dessert</mat-option>
                                         <mat-option [value]="'france'">Appéritif</mat-option>
                                     </mat-select>
+                                    <mat-error>La catégorie doit être renseignée!</mat-error>
                                 </mat-form-field>
                             </div>
                             <!-- Title -->
@@ -76,11 +79,19 @@
                                     <mat-label>Durée de préparation</mat-label>
                                     <mat-icon
                                         class="icon-size-5"
-                                        [svgIcon]="'heroicons_solid:briefcase'"
+                                        [svgIcon]="'mat_outline:access_time'"
                                         matPrefix></mat-icon>
                                     <input
                                         [formControlName]="'preparationTime'"
+                                        [placeholder]="'Ex 1h20'"
+                                        [matAutocomplete]="auto"
                                         matInput>
+                                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                   <mat-option *ngFor="let option of filteredDurations | async" [value]="option">
+                                     {{option}}
+                                   </mat-option>
+                                 </mat-autocomplete>
+                                 <mat-error *ngIf="dishDetail.get('step1').get('preparationTime').hasError('pattern')">La durée de préparation est invalide</mat-error>
                                 </mat-form-field>
                             </div>
                             <!-- Company -->
@@ -89,39 +100,37 @@
                                     <mat-label>Durée de cuisson</mat-label>
                                     <mat-icon
                                         class="icon-size-5"
-                                        [svgIcon]="'heroicons_solid:office-building'"
+                                        [svgIcon]="'mat_outline:timer'"
                                         matPrefix></mat-icon>
                                     <input
                                         [formControlName]="'cookingTime'"
+                                        [placeholder]="'Ex 0h25'"
+                                        [matAutocomplete]="autoCook"
                                         matInput>
+                                    <mat-autocomplete autoActiveFirstOption #autoCook="matAutocomplete">
+                                    <mat-option *ngFor="let option of filteredCooking | async" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                    </mat-autocomplete>
+                                    <mat-error *ngIf="dishDetail.get('step1').get('cookingTime').hasError('pattern')">La durée de cuisson est invalide</mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
         
+                        <p class="mt-6 mb-1 font-medium">
+                            Saisons
+                        </p>
                         <!-- Tags -->
                         <div class="flex flex-wrap items-center -m-1.5">
-                            <!-- Tags -->
-                            
-                            <ng-container *ngIf="dish.seasons.length">
-                                <p class="my-6 font-medium">
-                                    Saisons
-                                </p>                                <br>
-                                <ng-container *ngFor="let season of dish.seasons">
-                                    <div class="flex items-center justify-center px-4 m-1.5 rounded-full leading-9 text-gray-600 bg-gray-300 dark:text-gray-300 dark:bg-gray-700">
-                                        <span class="text-md font-medium whitespace-nowrap">{{season.name}}</span>
-                                    </div>
-                                </ng-container>
-                            </ng-container>
-                            <!-- Tags panel and its button -->
                             <div
-                                class="flex items-center justify-center px-4 m-1.5 rounded-full leading-9 cursor-pointer text-gray-600 bg-gray-300 dark:text-gray-300 dark:bg-gray-700"
+                                class="flex items-center justify-center px-4 m-1.5 rounded-full leading-9 cursor-pointer text-gray-600 bg-primary"
                                 (click)="openSeasonsPanel()"
                                 #seasonsPanelOrigin>
         
                                 <mat-icon
-                                    class="icon-size-5"
+                                    class="icon-size-5 text-white"
                                     [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
-                                <span class="ml-1.5 text-md font-medium whitespace-nowrap">Modifier</span>
+                                <span class="ml-1.5 text-md font-medium whitespace-nowrap text-white">Modifier</span>
         
                                 <!-- Tags panel -->
                                 <ng-template #seasonsPanel>
@@ -147,6 +156,17 @@
                                     </div>
                                 </ng-template>
                             </div>
+                            <!-- Tags -->
+                            <ng-container *ngIf="dish.seasons.length">
+                                
+                                <ng-container *ngFor="let season of dish.seasons">
+                                    <div class="flex items-center justify-center px-4 m-1.5 rounded-full leading-9 text-gray-600 bg-gray-200 dark:text-gray-300 dark:bg-gray-700">
+                                        <span class="text-md font-medium whitespace-nowrap">{{season.name}}</span>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                            <!-- Tags panel and its button -->
+                            
                         </div>
                         <div class="flex justify-end">
                             <button
@@ -164,6 +184,23 @@
                         [formGroupName]="'step2'"
                         [stepControl]="dishDetail.get('step2')"
                         #verticalStepperStep2>
+                        <div class="flex grid grid-cols-12">
+                            <div class="col-span-10 md:col-span-6">
+                                <mat-form-field class="fuse-mat-no-subscript w-full">
+                                    <mat-label>Nombre de personnes</mat-label>
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'people_alt'"
+                                        matPrefix></mat-icon>
+                                    <mat-select [formControlName]="'numberOfPeople'"  >
+                                        <mat-option *ngFor="let nbPeople of [1,2,3,4,5,6,7,8,9]" value="{{nbPeople}}">
+                                            {{nbPeople}} {{nbPeople == 1 ? 'Personne' : 'Personnes'}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
                         <ng-template matStepLabel>Ingrédients</ng-template>
                         <div class="space-y-4">
                             <ng-container formArrayName="ingredients" *ngFor="let ingredients of dishDetail.get('step2').get('ingredients')['controls']; let i = index; let first = first; let last = last; trackBy: trackByFn">
@@ -204,7 +241,7 @@
                                                     matTooltip="Remove">
                                                     <mat-icon
                                                         class="icon-size-5"
-                                                        [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                                        [svgIcon]="'feather:trash-2'"></mat-icon>
                                                 </button>
                                             </div>
                                         </ng-container>
@@ -234,7 +271,6 @@
                                 mat-flat-button
                                 [color]="'primary'"
                                 type="button"
-                                [disabled]="verticalStepperStep2.stepControl.pristine || verticalStepperStep2.stepControl.invalid"
                                 (click)="verticalStepper.next()">
                                 Suivant
                             </button>
@@ -301,7 +337,6 @@
                                 mat-flat-button
                                 [color]="'primary'"
                                 type="button"
-                                [disabled]="verticalStepperStep2.stepControl.pristine || verticalStepperStep2.stepControl.invalid"
                                 (click)="addDish()">
                                 Ajouter le plat
                             </button>

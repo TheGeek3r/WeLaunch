@@ -12,6 +12,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 
 const routes: Routes = [
+  { 
+      path      : ':id', 
+      component : DishesListComponent 
+  },
   {
       path     : '**',
       component: DishesListComponent

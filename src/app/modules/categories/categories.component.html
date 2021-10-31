@@ -28,7 +28,7 @@
     </div>
 
     <!-- Main -->
-    <div class="flex-auto m-6">
+    <div class="flex-auto p-6 bg-default">
         <div class="w-full max-w-screen-xl mx-auto">
             <button
                 class="mb-4 sm:mb-6 px-1 sm:px-4 min-w-10"
@@ -53,7 +53,7 @@
                             style="margin-left: auto;"
                             class="top-left"
                             matTooltip="Ne plus selectionner cette catégorie pour la géneration des repas"
-                            (click)="retirerDeLaGeneration(category)">
+                            (click)="updateGeneration(category)">
                             <mat-icon svgIcon="remove_circle_outline" class="text-orange-600"></mat-icon>
                         </button>    
                                 
@@ -61,7 +61,7 @@
                             style="margin-left: auto;"
                             class="top-left"
                             matTooltip="Selectionner cette catégorie pour la géneration des repas"
-                            (click)="ajouterALaGeneration(category)">
+                            (click)="updateGeneration(category)">
                             <mat-icon svgIcon="add_circle_outline" class="text-green-600"></mat-icon>
                         </button>
                         <button mat-icon-button
@@ -82,7 +82,7 @@
                                     class="px-3 mr-1"
                                     mat-button
                                     [color]="'primary'"
-                                    [routerLink]="['./']">
+                                    [routerLink]="['/les-repas', category.id]">
                                     Details
                                 </button>
                                 <button

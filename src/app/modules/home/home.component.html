@@ -1,0 +1,147 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div class="dark bg-card dark:border-b">
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+            <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12">
+                <!-- Avatar and name -->
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+                        <img
+                            class="w-full h-full object-cover"
+                            src="assets/images/avatars/brian-hughes.jpg">
+                    </div>
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container>
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">Accueil</div>
+                        </ng-container>
+                        <!--<div class="flex items-center">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                            <div class="ml-1.5 leading-6 truncate text-secondary">You have 2 new messages and 15 new tasks</div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 bg-default">
+        <div class="w-full max-w-screen-xl mx-auto">
+            <div class="flex flex-wrap items-start w-full max-w-400 gap-4 pb-6">
+                <ng-container>
+                    
+                    <fuse-card class="flex items-center max-w-80 w-full p-6 filter-info cursor-pointer hover:bg-hover" [routerLink]="['./prochains-repas']">
+                        <mat-icon
+                            class="icon-size-12 mr-6"
+                            [svgIcon]="'iconsmind:calendar_4'"></mat-icon>
+                        <div class="flex flex-col">
+                            <div class="text-2xl font-semibold leading-tight">13 repas prévus</div>
+                            <div class="text-md text-secondary">jusqu'au samedi 24 mai</div>
+                        </div>
+                    </fuse-card>
+
+                    <fuse-card class="flex items-center max-w-80 w-full p-6 filter-info cursor-pointer hover:bg-hover" [routerLink]="['./les-repas']">
+                        <mat-icon
+                            class="icon-size-12 mr-6"
+                            [svgIcon]="'iconsmind:receipt_3'"></mat-icon>
+                        <div class="flex flex-col">
+                            <div class="text-2xl font-semibold leading-tight">40 recettes</div>
+                            <div class="text-md text-secondary">de cuisine</div>
+                        </div>
+                    </fuse-card>
+
+                    <fuse-card class="flex items-center max-w-80 w-full p-6 filter-info cursor-pointer hover:bg-hover" [routerLink]="['./liste-des-courses']">
+                        <mat-icon
+                            class="icon-size-12 mr-6"
+                            [svgIcon]="'iconsmind:check'"></mat-icon>
+                        <div class="flex flex-col">
+                            <div class="text-2xl font-semibold leading-tight">5 ingredients</div>
+                            <div class="text-md text-secondary">sur votre liste des courses</div>
+                        </div>
+                    </fuse-card>
+
+                    <fuse-card class="flex items-center max-w-80 w-full p-6 filter-info cursor-pointer hover:bg-hover" [routerLink]="['./categories']">
+                        <mat-icon
+                            class="icon-size-12 mr-6"
+                            [svgIcon]="'iconsmind:user'"></mat-icon>
+                        <div class="flex flex-col">
+                            <div class="text-2xl font-semibold leading-tight">3 personnes</div>
+                            <div class="text-md text-secondary">dans votre famille</div>
+                        </div>
+                    </fuse-card>
+
+                    <fuse-card class="flex flex-col max-w-80 w-full p-8 pt-6 filter-list">
+                        <div class="flex items-center justify-between">
+                            <div class="text-2xl font-semibold leading-tight">Prochains Repas</div>
+                        </div>
+                        <div class="flex flex-col my-2">
+                            <div class="my-2">
+                                <div>Patates + Riz</div>
+                                <div class="text-secondary text-md">Samedi 21 Mai * Midi * 4 personnes</div>
+                            </div>
+                            <div class="my-2">
+                                <div>Lunch with Sam</div>
+                                <div class="text-secondary text-md">12:30 PM</div>
+                            </div>
+                            <div class="my-2">
+                                <div>Presentation of weekly usage and analytics report</div>
+                                <div class="text-secondary text-md">01:45 PM</div>
+                            </div>
+                            <div class="my-2">
+                                <div>Meeting with new interns</div>
+                                <div class="text-secondary text-md">02:30 PM</div>
+                            </div>
+                            <div class="my-2">
+                                <div>Coffee break & John's birthday</div>
+                                <div class="text-secondary text-md">03:30 PM</div>
+                            </div>
+                            <div class="my-2">
+                                <div>Dinner with wife and kids</div>
+                                <div class="text-secondary text-md">07:30 PM</div>
+                            </div>
+                        </div>
+                    </fuse-card>
+                    
+                    <fuse-card class="flex flex-col md:flex-row max-w-80 cust-width w-full filter-article">
+                        <div class="flex-0 w-80 md:w-64">
+                            <img
+                                class="w-full h-full object-cover"
+                                src="assets/images/cards/11-512x512.jpg"
+                                alt="Card cover image">
+                        </div>
+                        <div class="flex flex-col flex-auto m-8 mb-4">
+                            <div class="text-2xl font-semibold leading-tight">Nos idées de recettes</div>
+                            <div class="text-secondary font-medium text-md mt-1">Updated with 20 new locations</div>
+                            <div class="mt-4">
+                                From rocky mountains to crystal clear lakes, these are the places you must see and enjoy.
+                                You can bring your own food and have a little picnic on top of the amazing grasslands.
+                            </div>
+                            <div class="mt-3 -mx-3">
+                                <button
+                                    class="px-3"
+                                    mat-button
+                                    [color]="'primary'"
+                                    [routerLink]="['./']">
+                                    Read More
+                                </button>
+                            </div>
+                        </div>
+                    </fuse-card>
+                    <fuse-card class="flex flex-col max-w-80 w-full filter-article">
+                        <img
+                            class="object-cover"
+                            src="assets/images/cards/08-320x200.jpg"
+                            alt="Card cover image">
+                        <div class="m-8">
+                            <div class="text-2xl font-semibold leading-tight">Rocky mountain tops</div>
+                            <div class="text-secondary text-md mt-1">Updated with 20 new locations</div>
+                        </div>
+                    </fuse-card>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

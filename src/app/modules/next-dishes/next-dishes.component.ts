@@ -26,12 +26,14 @@ export class NextDishesComponent implements OnInit {
         {
           moment: "Midi",
           name: "Barbeuc",
-          numberOfPeople: 4
+          numberOfPeople: 4,
+          id: "45040-340345-3403054"
         },
         {
           moment: "Soir",
           name: "Barbeuc",
-          numberOfPeople: 4
+          numberOfPeople: 4,
+          id: "4500-3345-3054"
         }
       ]
     },
@@ -41,7 +43,8 @@ export class NextDishesComponent implements OnInit {
         {
           moment: "Soir",
           name: "Barbeuc",
-          numberOfPeople: 5
+          numberOfPeople: 5,
+          id: "45040-345-3403054"
         }
       ]
     }

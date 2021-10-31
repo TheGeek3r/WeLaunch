@@ -9,11 +9,11 @@
                     <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
                         <img
                             class="w-full h-full object-cover"
-                            src="assets/images/avatars/brian-hughes.jpg">
+                            src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
                     </div>
                     <div class="flex flex-col min-w-0 ml-4">
                         <ng-container>
-                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">Ajouter un plat</div>
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">Recette {{id}} - {{user.numberOfPeople}}</div>
                         </ng-container>
                         <!--<div class="flex items-center">
                             <mat-icon
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="relative flex flex-col flex-auto items-center">
+    <div class="relative flex flex-col flex-auto items-center bg-default">
         <div class="w-full max-w-none md:max-w-3xl m-0 md:m-6">
             <!-- Tabs -->
             <mat-tab-group
@@ -39,10 +39,9 @@
                     <!-- Card #19 -->
             <fuse-card class="grid grid-cols-1 flex flex-col lg:flex-row max-w-sm filter-pricing m-auto ">
                         <div class="flex flex-col items-center">
-                            <img
-                                class="object-cover"
-                                src="assets/images/mansion-01-320x200.jpg"
-                                alt="Card cover image">
+                            <img class="object-cover"
+                                 src="https://images.unsplash.com/photo-1547592180-85f173990554?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            >
                         </div>
                         <div class="p-6 sm:p-8 lg:p-10 bg-gray-100 dark:bg-black dark:bg-opacity-10">
                             <div class="text-3xl font-bold">Poulet / Légumes</div>
@@ -102,35 +101,35 @@
                 <mat-tab label="Ingrédients">
                     <div class="text-2xl font-semibold tracking-tight whitespace-nowrap mb-4">
                         Ingrédients pour 
-                        <button
+                        <button *ngIf="numberOfPeople > 1"
                             mat-icon-button
                             (click)="RemovePerson()">
                             <mat-icon
-                                class="icon-size-5"
+                                class="icon-size-5 cust-margin"
                                 [svgIcon]="'remove_circle_outline'"></mat-icon>
                         </button>
-                        4
+                        {{numberOfPeople}}
                         <button
                         mat-icon-button
                         (click)="AddPerson()">
                         <mat-icon
-                            class="icon-size-5"
+                            class="icon-size-5 cust-margin"
                             [svgIcon]="'add_circle_outline'"></mat-icon>
                     </button>
                     Personnes
                     </div>
                     <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full min-w-0">
-                        <ng-container *ngFor="let member of ingredients">
+                        <ng-container *ngFor="let ingredient of ingredients">
                             <div class="flex flex-col flex-auto items-center shadow bg-accent-100 dark:bg-hover rounded-2xl overflow-hidden">
                                 <!-- Avatar & Info -->
                                 <div class="flex flex-col flex-auto w-full pt-6 pb-6 text-center">
                                     <div class="w-20 h-20 mx-auto rounded-full overflow-hidden">
                                         <img
                                             class="w-full h-full object-cover"
-                                            [src]="member.avatar">
+                                            [src]="ingredient.image">
                                     </div>
-                                    <div class="mt-6 font-medium">{{member.name}}</div>
-                                    <div class="text-secondary">{{member.title}}</div>
+                                    <div class="mt-6 font-medium">{{ingredient.name}}</div>
+                                    <div class="text-secondary">{{ingredient.quantity}} {{ingredient.unit}}</div>
                                 </div>
                             </div>
                         </ng-container>

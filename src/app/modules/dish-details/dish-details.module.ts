@@ -6,11 +6,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { FuseCardModule } from '@fuse/components/card';
+import { UserModule } from 'app/layout/common/user/user.module';
 
 const routes: Routes = [
   {
-      path     : '**',
-      component: DishDetailsComponent
+    path: ':id', 
+    component: DishDetailsComponent
+  },
+  {
+    path     : '**',
+    component: DishDetailsComponent
   }
 ];
 
@@ -25,7 +30,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatTabsModule,
     MatIconModule,
-    FuseCardModule
-  ]
+    FuseCardModule,
+    UserModule
+  ],
 })
 export class DishDetailsModule { }

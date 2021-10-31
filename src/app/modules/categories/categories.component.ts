@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService } from 'app/services/categories.service';
 import { fuseAnimations } from '@fuse/animations';
-import {MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AddCategoryComponent } from './add-category/add-category.component';
 
 @Component({
@@ -15,24 +15,28 @@ export class CategoriesComponent implements OnInit {
   image = "assets/images/mansion-01-320x200.jpg";
   categories = [
     {
+      id: 1,
       name: 'Repas',
       numberOfDishes: 33,
       algoRepas: true,
       image: 'assets/images/mansion-01-320x200.jpg'
     },
     {
+      id: 2,
       name: 'Repas',
       numberOfDishes: 33,
       algoRepas: true,
       image: 'assets/images/mansion-01-320x200.jpg'
     },
     {
+      id: 3,
       name: 'Repas',
       numberOfDishes: 33,
       algoRepas: true,
       image: 'assets/images/mansion-01-320x200.jpg'
     },
     {
+      id: 4,
       name: 'Repas',
       numberOfDishes: 33,
       algoRepas: true,
@@ -61,11 +65,11 @@ export class CategoriesComponent implements OnInit {
           {
             console.log(image);
             img = image.urls.raw + "&auto=format&fit=crop&w=318&h=180";
-            this.categories.push({name: result, numberOfDishes: 0, algoRepas: false, image: img});
+            this.categories.push({id: 1, name: result, numberOfDishes: 0, algoRepas: false, image: img});
           },
           err => {
             img = "assets/images/categories/demo.jpeg";
-            this.categories.push({name: result, numberOfDishes: 0, algoRepas: false, image: img});
+            this.categories.push({id: 5, name: result, numberOfDishes: 0, algoRepas: false, image: img});
           }
         );
 
@@ -98,14 +102,8 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  retirerDeLaGeneration(categorie: any)
+  updateGeneration(categorie: any)
   {
-    categorie.algoRepas = false;
+    categorie.algoRepas = !categorie.algoRepas;
   }
-
-  ajouterALaGeneration(categorie: any)
-  {
-    categorie.algoRepas = true;
-  }
-
 }

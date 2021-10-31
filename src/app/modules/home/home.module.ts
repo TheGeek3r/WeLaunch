@@ -1,30 +1,28 @@
-import { Routes, RouterModule } from '@angular/router';
-import { CategoriesComponent } from './categories.component';
 import { NgModule } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FuseCardModule } from '@fuse/components/card';
-import { MatButtonModule } from '@angular/material/button';
-import { AddCategoryComponent } from './add-category/add-category.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   {
       path     : '**',
-      component: CategoriesComponent
+      component: HomeComponent
   }
 ];
 
 @NgModule({
   declarations: [
-    CategoriesComponent,
-    AddCategoryComponent
+    HomeComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -42,4 +40,4 @@ const routes: Routes = [
     MatDialogModule
   ]
 })
-export class CategoriesModule { }
+export class HomeModule { }

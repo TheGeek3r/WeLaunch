@@ -1,0 +1,135 @@
+<div class="flex flex-col flex-auto">
+
+    <div class="dark bg-card flex flex-col sm:flex-row items-start sm:items-center sm:justify-between py-8 px-6 md:px-8">
+        <div class="flex">
+            <div class="md:hidden -ml-2 mr-3">
+                <button
+                    mat-icon-button
+                    (click)="shoppingListComponent.drawer.toggle()">
+                    <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+                </button>
+            </div>
+
+            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate m-auto">Votre liste de courses</div>
+            <div class="ml-0.5 font-medium text-secondary">
+                <!-- <span *ngIf="tasksCount.incomplete === 0">All tasks completed!</span>
+                <span *ngIf="tasksCount.incomplete !== 0">{{tasksCount.incomplete}} remaining tasks</span> -->
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="mt-4 sm:mt-0">
+            <button
+                class="ml-3"
+                mat-flat-button
+                [color]="'primary'">
+                <mat-icon [svgIcon]="'heroicons_outline:badge-check'"></mat-icon>
+                <span class="ml-2 mr-1">Mode Course</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="dark bg-card pb-8">
+        <form [formGroup]="itemToAdd">
+            <ng-container>
+                <div class="flex grid grid-cols-12 gap-2 w-full mt-4 ml-4">
+                    <div class="col-span-4 sm:col-span-6 lg:col-span-3">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Ingrédient</mat-label>
+                            <input 
+                                formControlName="name"
+                                matInput
+                                [matAutocomplete]="autoName">
+                            <mat-autocomplete class="dark" autoActiveFirstOption #autoName="matAutocomplete">
+                                <mat-option class="dark" *ngFor="let option of filteredNameOptions | async" [value]="option.name">
+                                    {{option.name}}
+                                </mat-option>
+                                </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-span-2">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Quantité</mat-label>
+                            <input
+                                formControlName="amount"
+                                matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-span-3 sm:col-span-2">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Unité</mat-label>
+                            <input
+                                formControlName="unit"
+                                matInput
+                                [matAutocomplete]="autoUnit">
+                            <mat-autocomplete class="dark" autoActiveFirstOption #autoUnit="matAutocomplete">
+                                <mat-option class="dark" *ngFor="let option of filteredUnitOptions | async" [value]="option.name">
+                                    <p *ngIf="option.fullname">{{option.fullname}} ({{option.name}})</p>
+                                    <p *ngIf="!option.fullname">{{option.name}}</p>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <div class="mt-4 sm:mt-0" style="margin-top: 28px !important;">
+                            <button
+                                class="sm:ml-3"
+                                mat-flat-button
+                                [color]="'primary'"
+                                (click)="addItem()">
+                                <mat-icon [svgIcon]="'add'"></mat-icon>
+                                <span class="hidden lg:block ml-2 mr-1">Ajouter</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </form>
+    </div>
+
+    <div class="divide-y">
+    <ng-container *ngFor="let item of itemsList; let i = index; let first = first; let last = last; trackBy: trackByFn">
+        <div class="flex grid grid-cols-12 gap-2 w-full ">
+            <div class="col-span-5 flex">
+                    <div class="mr-4 mt-2 mb-2 ml-2 flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
+                        <ng-container >
+                            <img class="object-cover w-full h-full"
+                                src="https://static.750g.com/images/160-100/21c93d5ac08787374a7b68de18fcd50a/gettyimages-646400914.jpg"/>
+                        </ng-container>
+                        <!--<ng-container >
+                            <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                {{item.name.charAt(0)}}
+                            </div>
+                        </ng-container>-->
+                    </div>
+                                <a style="margin: auto 0;"><b>{{item.amount}}</b> {{item.unit}}</a>
+            </div>
+            <div class="col-span-5" style="margin: auto 0;">
+                    <div class="leading-6">{{item.name}}</div>
+            </div>
+            <div class="col-span-2" style="margin: auto 0;">
+                <ng-container>
+                    <div class="flex items-center w-10">
+                        <button
+                            class="w-8 h-8 min-h-8"
+                            mat-icon-button
+                            (click)="removeItem(i)"
+                            matTooltip="Supprimer">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'feather:trash-2'"></mat-icon>
+                        </button>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+    </div>
+    <ng-template #noTasks>
+        <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+            <mat-icon
+                class="icon-size-24"
+                [svgIcon]="'iconsmind:bulleted_list'"></mat-icon>
+            <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">Add a task to start planning!</div>
+        </div>
+    </ng-template>
+</div>

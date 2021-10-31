@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
 import moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DecimalPipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-dish-details',
@@ -8,7 +16,7 @@ import moment from 'moment';
 })
 export class DishDetailsComponent implements OnInit {
 
-
+ numberOfPeople = 4;
  activities = [
     {
         id          : '493190c9-5b61-4912-afe5-78c21f1044d7',
@@ -97,84 +105,65 @@ export class DishDetailsComponent implements OnInit {
 
 ingredients = [
     {
-        id    : '2bfa2be5-7688-48d5-b5ac-dc0d9ac97f14',
-        avatar: 'assets/images/avatars/female-10.jpg',
-        name  : '20 g',
-        email : 'nadiamcknight@mail.com',
-        phone : '+1-943-511-2203',
-        title : 'de Pommes de terre de la mer'
+        id    : 4,
+        unit : 'kilo (kg)',
+        quantity : 20,
+        name : 'Carotte',
+        image : 'https://assets.afcdn.com/recipe/20170607/67370_s96cx350cy350.jpg'
     },
     {
-        id    : '77a4383b-b5a5-4943-bc46-04c3431d1566',
-        avatar: 'assets/images/avatars/male-19.jpg',
-        name  : 'Best Blackburn',
-        email : 'blackburn.best@beadzza.me',
-        phone : '+1-814-498-3701',
-        title : 'Senior Developer'
+        id    : 4,
+        unit : 'kilo (kg)',
+        quantity : 20,
+        name : 'Carotte',
+        image : "https://assets.afcdn.com/recipe/20170607/67370_s96cx350cy350.jpg"
     },
     {
-        id    : '8bb0f597-673a-47ca-8c77-2f83219cb9af',
-        avatar: 'assets/images/avatars/male-14.jpg',
-        name  : 'Duncan Carver',
-        email : 'duncancarver@mail.info',
-        phone : '+1-968-547-2111',
-        title : 'Senior Developer'
+        id    : 4,
+        unit : 'kilo (kg)',
+        quantity : 20,
+        name : 'Carotte',
+        image : 'https://assets.afcdn.com/recipe/20170607/67370_s96cx350cy350.jpg'
     },
     {
-        id    : 'c318e31f-1d74-49c5-8dae-2bc5805e2fdb',
-        avatar: 'assets/images/avatars/male-01.jpg',
-        name  : 'Martin Richards',
-        email : 'martinrichards@mail.biz',
-        phone : '+1-902-500-2668',
-        title : 'Junior Developer'
+        id    : 4,
+        unit : 'kilo (kg)',
+        quantity : 6.54,
+        name : 'Carotte',
+        image : 'https://assets.afcdn.com/recipe/20170607/67370_s96cx350cy350.jpg'
     },
-    {
-        id    : '0a8bc517-631a-4a93-aacc-000fa2e8294c',
-        avatar: 'assets/images/avatars/female-20.jpg',
-        name  : 'Candice Munoz',
-        email : 'candicemunoz@mail.co.uk',
-        phone : '+1-838-562-2769',
-        title : 'Lead Designer'
-    },
-    {
-        id    : 'a4c9945a-757b-40b0-8942-d20e0543cabd',
-        avatar: 'assets/images/avatars/female-01.jpg',
-        name  : 'Vickie Mosley',
-        email : 'vickiemosley@mail.net',
-        phone : '+1-939-555-3054',
-        title : 'Designer'
-    },
-    {
-        id    : 'b8258ccf-48b5-46a2-9c95-e0bd7580c645',
-        avatar: 'assets/images/avatars/female-02.jpg',
-        name  : 'Tina Harris',
-        email : 'tinaharris@mail.ca',
-        phone : '+1-933-464-2431',
-        title : 'Designer'
-    },
-    {
-        id    : 'f004ea79-98fc-436c-9ba5-6cfe32fe583d',
-        avatar: 'assets/images/avatars/male-02.jpg',
-        name  : 'Holt Manning',
-        email : 'holtmanning@mail.org',
-        phone : '+1-822-531-2600',
-        title : 'Marketing Manager'
-    },
-    {
-        id    : '8b69fe2d-d7cc-4a3d-983d-559173e37d37',
-        avatar: 'assets/images/avatars/female-03.jpg',
-        name  : 'Misty Ramsey',
-        email : 'mistyramsey@mail.us',
-        phone : '+1-990-457-2106',
-        title : 'Consultant'
-    }
   ];
+  
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  id : number;
+  user: User;
 
-  constructor() { }
+  constructor(private _route: ActivatedRoute, 
+              private _router: Router,
+              private _toastr: ToastrService,
+              private _userService: UserService
+              ) { }
 
   ngOnInit(): void {
-  }
 
+    // Récupération du User connecté
+    this._userService.user$
+    .pipe((takeUntil(this._unsubscribeAll)))
+    .subscribe((user: User) => {
+        this.user = user;
+    });
+
+    // Récupération de l'identifiant du repas
+    let id = this._route.snapshot.params.id;
+    this.id = id;
+
+    // TODO : Dans le cas ou on trouve r aussi, ça degage sur l'accueil
+    // TODO : Si la recette ne lui appartient pas, ça degage aussi
+    if(id == null) {
+        this._router.navigate(['']);
+        this._toastr.warning("Impossible de récupérer le détail de la recette.")
+    }
+  }
 
    /**
      * Returns whether the given dates are different days
@@ -212,19 +201,20 @@ ingredients = [
         return moment(date, moment.ISO_8601).fromNow();
     }
 
-    RemovePerson(){}
+    RemovePerson(){
+        this.ingredients.forEach(i => i.quantity = Math.round((this.numberOfPeople - 1) / this.numberOfPeople * i.quantity * 100) / 100)
+        this.numberOfPeople--;
 
-    AddPerson(){}
+    }
 
-/**
-     * Track by function for ngFor loops
-     *
-     * @param index
-     * @param item
-     */
- trackByFn(index: number, item: any): any
- {
-     return item.id || index;
- }
+    AddPerson(){
+        this.ingredients.forEach(i => i.quantity = Math.round((this.numberOfPeople + 1) / this.numberOfPeople * i.quantity * 100) / 100)
+        this.numberOfPeople++;
+    }
+
+    trackByFn(index: number, item: any): any
+    {
+        return item.id || index;
+    }
 
 }

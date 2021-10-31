@@ -17,7 +17,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 
-
 const routes: Routes = [
   {
       path     : '**',
@@ -47,7 +46,7 @@ const routes: Routes = [
     MatAutocompleteModule,
     FormsModule,
     MatMenuModule,
-    MatRadioModule
+    MatRadioModule,
   ]
 })
 export class GenerateDishesModule { }

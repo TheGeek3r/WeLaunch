@@ -1,7 +1,10 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { Dish, Ingredient, Recipe, Season } from './add-dish.types';
 
 @Component({
@@ -26,15 +29,19 @@ export class AddDishComponent implements OnInit {
   recipe: Recipe[];
   ingredients: Ingredient[];
 
+  durations: string[];
+  filteredDurations: Observable<string[]>;
+  filteredCooking: Observable<string[]>;
+
   private _seasonsPanelOverlayRef: OverlayRef;
-
-
+  
   constructor(
     private _formBuilder: FormBuilder,
     private _overlay: Overlay,
     private _renderer2: Renderer2,
     private _viewContainerRef: ViewContainerRef,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _httpClient: HttpClient
     ) { }
 
   ngOnInit(): void {
@@ -45,6 +52,8 @@ export class AddDishComponent implements OnInit {
     {id: "3", name: "Automne"},
     {id: "4", name: "Hiver"}
   ]
+
+  this.durations = ['0h05', '0h10', '0h15','0h20', '0h25', '0h35','0h40', '0h45', '0h50','0h55', '1h00', '1h10','1h20', '1h30', '1h40','1h50', '2h00', '2h15', '2h30', '2h45', '3h00',' 3h15', '3h30', '3h35', '4h00']
   
     this.dish = {
         id :"",
@@ -62,10 +71,10 @@ export class AddDishComponent implements OnInit {
     this.dishDetail = this._formBuilder.group({
         step1: this._formBuilder.group({
             id : [''],
-            name : ['', [Validators.required]],
+            name : ['', [Validators.required, Validators.minLength(1)]],
             category : ['', [Validators.required]],
-            preparationTime : ['', [Validators.required]],
-            cookingTime : ['', [Validators.required]],
+            preparationTime : ['', [Validators.required, Validators.pattern("^([0-9]|10)h[0-5][0-9]$")]],
+            cookingTime : ['', [Validators.required, Validators.pattern("^([0-9]|10)h[0-5][0-9]$")]],
             seasons : [[]]
         }),
         step2: this._formBuilder.group({
@@ -79,6 +88,22 @@ export class AddDishComponent implements OnInit {
 
     this.addIngredientField();
     this.addRecipeField();
+
+    this.filteredDurations = this.dishDetail.get('step1.preparationTime').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+
+    this.filteredCooking = this.dishDetail.get('step1.cookingTime').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.durations.filter(option => option.toLowerCase().includes(filterValue));
   }
 
  /**
@@ -231,7 +256,7 @@ export class AddDishComponent implements OnInit {
       {
           // Create an empty email form group
           const recipeFormGroup = this._formBuilder.group({
-              description: ['']
+              description: ['',]
           });
   
           // Add the email form group to the emails form array
