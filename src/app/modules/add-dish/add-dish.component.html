@@ -193,7 +193,7 @@
                                         [svgIcon]="'people_alt'"
                                         matPrefix></mat-icon>
                                     <mat-select [formControlName]="'numberOfPeople'"  >
-                                        <mat-option *ngFor="let nbPeople of [1,2,3,4,5,6,7,8,9]" value="{{nbPeople}}">
+                                        <mat-option *ngFor="let nbPeople of [1,2,3,4,5,6,7,8,9]" [value]="nbPeople">
                                             {{nbPeople}} {{nbPeople == 1 ? 'Personne' : 'Personnes'}}
                                         </mat-option>
                                     </mat-select>

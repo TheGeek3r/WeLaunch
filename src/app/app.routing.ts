@@ -79,6 +79,7 @@ export const appRoutes: Route[] = [
             {path: 'les-repas', loadChildren:() => import('app/modules/dishes-list/dishes-list.module').then(m => m.DishesListModule)},
             {path: 'generer-repas', loadChildren:() => import('app/modules/generate-dishes/generate-dishes.module').then(m => m.GenerateDishesModule)},
             {path: 'liste-des-courses', loadChildren:() => import('app/modules/shopping-list/shopping-list.module').then(m => m.ShoppingListModule)},
+            {path: 'preferences', loadChildren:() => import('app/modules/settings/settings.module').then(m => m.SettingsModule)},
             {path: '**', loadChildren: () => import('app/modules/home/home.module').then(m => m.HomeModule)},
         ]
     }

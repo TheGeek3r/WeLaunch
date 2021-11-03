@@ -1,0 +1,83 @@
+<div class="w-full max-w-3xl">
+
+    <!-- Add team member -->
+    <div class="w-full">
+        <mat-form-field
+            class="fuse-mat-no-subscript w-full"
+            [floatLabel]="'always'">
+            <mat-label>Ajouter des amis pour partager vos recettes entre vous.</mat-label>
+            <mat-icon
+                class="icon-size-5"
+                [svgIcon]="'heroicons_solid:user'"
+                matPrefix></mat-icon>
+            <input
+                matInput
+                [placeholder]="'Adresse Email'" (keyup.enter)="addFriend()">
+            <button
+                mat-icon-button
+                matSuffix>
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:plus-circle'"
+                    (click)="addFriend()"></mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+
+    <!-- Team members -->
+    <div class="flex flex-col mt-8 divide-y border-t border-b">
+        <ng-container *ngFor="let member of members; trackBy: trackByFn;">
+            <div class="flex flex-col sm:flex-row sm:items-center py-6">
+                <div class="flex items-center">
+                    <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
+                        <ng-container *ngIf="member.avatar">
+                            <img
+                                class="object-cover w-full h-full"
+                                [src]="member.avatar"
+                                alt="Contact avatar"/>
+                        </ng-container>
+                        <ng-container *ngIf="!member.avatar">
+                            <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                {{member.name.charAt(0)}}
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="ml-4">
+                        <div class="font-medium">{{member.name}}</div>
+                        <div class="text-secondary">{{member.email}}</div>
+                    </div>
+                </div>
+                <div class="flex items-center mt-4 sm:mt-0 sm:ml-auto">
+                    <div class="order-2 sm:order-1 ml-4 sm:ml-0">
+                        <div
+                                            class="py-0.5 px-3 rounded-full text-sm font-semibold"
+                                            [ngClass]="{'text-green-50 bg-green-500': member.status === 'Validé',
+                                                        'text-amber-50 bg-amber-500': member.status !== 'Validé'}"
+                                            matTooltip="{{getDetail(member.status, member.name)}}"
+                                            [matTooltipDisabled]="member.status === 'Validé'">
+                                            {{member.status}}
+                        </div>
+                    </div>
+                    <div class="order-1 sm:order-2 sm:ml-6">
+                        <button mat-icon-button *ngIf="member.status !== 'A Valider'">
+                            <mat-icon
+                                class="text-hint"
+                                [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                        </button>
+                        <button mat-icon-button *ngIf="member.status === 'A Valider'" class="mr-1">
+                            <mat-icon
+                                class="text-hint"
+                                [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                        </button>
+                        <button mat-icon-button *ngIf="member.status === 'A Valider'">
+                            <mat-icon
+                                class="text-hint"
+                                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+</div>

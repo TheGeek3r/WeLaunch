@@ -85,4 +85,11 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         icon : 'shopping_cart',
         link : '/liste-des-courses'
     },
+    {
+        id   : 'preferences',
+        title: 'Preferences',
+        type : 'basic',
+        icon : 'settings',
+        link : '/preferences'
+    },
 ];

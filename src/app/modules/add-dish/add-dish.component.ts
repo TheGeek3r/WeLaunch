@@ -62,7 +62,7 @@ export class AddDishComponent implements OnInit {
         preparationTime: "",
         cookingTime: "",
         seasons: [...this.seasons],
-        numberOfPeople : 4,
+        numberOfPeople : 5,
         ingredients: [],
         recipe: []
     }
@@ -78,7 +78,7 @@ export class AddDishComponent implements OnInit {
             seasons : [[]]
         }),
         step2: this._formBuilder.group({
-            numberOfPeople : [''],
+            numberOfPeople : [5],
             ingredients : this._formBuilder.array([]),
         }),
         step3: this._formBuilder.group({
